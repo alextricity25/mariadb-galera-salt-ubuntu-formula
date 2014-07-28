@@ -28,16 +28,18 @@ Running the states
 
 Once salt-master and salt-minion have been installed, accept the minion's salt-key and follow these instructions on the salt-master: 
 
-1. Assign mariadb_base role to one of the nodes in the MariaDB-Galera cluster: 
-	* salt \<node\> grains.setval roles ['mariadb_base']
-2. Assign mariadb_slave role to the remaining nodes in the MariaD-Galera cluster. Do the following for each "slave": 
-	* salt \<node\> grains.setval roles ['mariadb_slave']
-3. Change the ip address in /srv/pillar/galera/init.sls to match those of your cluster. If you need more than three, simple add another key:value pair in the appropriate spot. 
 
-4. Run galera state on the node with the mariadb_base role
+1. First, clone this repo in your /srv directory. 
+2. Assign mariadb_base role to one of the nodes in the MariaDB-Galera cluster: 
+	* salt \<node\> grains.setval roles ['mariadb_base']
+3. Assign mariadb_slave role to the remaining nodes in the MariaD-Galera cluster. Do the following for each "slave": 
+	* salt \<node\> grains.setval roles ['mariadb_slave']
+4. Change the ip address in /srv/pillar/galera/init.sls to match those of your cluster. If you need more than three, simple add another key:value pair in the appropriate spot. 
+
+5. Run galera state on the node with the mariadb_base role
 	* salt \<base_node\> state.sls galera
 
-5. Run galera state on remaning nodes. 
+6. Run galera state on remaning nodes. 
 	* salt \<slave_node\> state.sls galera 
 
 
