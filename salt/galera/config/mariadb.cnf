@@ -1,0 +1,18 @@
+#
+# This file is managed by salt {{ grains['saltversion'] }}
+#
+[mysqld]
+wsrep_cluster_name={{ pillar['mdb_cluster']['name'] }}
+{% if grains['host'] == pillar['mdb_cluster']['host'] %}
+wsrep_cluster_address = 'gcomm://'
+{% else %}
+{% set host_name = grains['host'] %}
+wsrep_cluster_address = 'gcomm://{{ pillar['mdb_cluster']['ip_addr'] }}'
+wsrep_node_address = {{ pillar['mdb_cluster']['nodes'][host_name] }}
+wsrep_node_name = {{ host_name }}
+{% endif %}
+wsrep_provider = {{ pillar['mdb_config']['provider'] }}
+wsrep_retry_autocommit = 0
+wsrep_sst_method = rsync
+wsrep_provider_options="gcache.size=1G; gcache.page_size=1G"
+wsrep_slave_threads=16

@@ -1,0 +1,30 @@
+{% set ipaddresses = salt['pillar.get']('mdb_cluster:nodes', {}).values() %} 
+{% set ipaddresses = ",".join(ipaddresses) %} 
+[mysqld]
+query_cache_size=0
+binlog_format=ROW
+default-storage-engine=innodb
+innodb_autoinc_lock_mode=2
+query_cache_type=0
+bind-address=0.0.0.0
+
+# Galera Provider Configuration 
+
+{% if grains['os'] != 'Ubuntu' %}
+wsrep_provider={{ pillar['mdb_config']['provider'] }}
+{% else %} 
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+{% endif %}
+#wsrep_provider_options="gchache.size=32G" 
+
+#Galera Cluster Configuration
+wsrep_cluster_name="{{ pillar['mdb_cluster']['name'] }}"
+wsrep_cluster_address="gcomm://{{ ipaddresses }}"
+
+# Galera Synchronization Configuration 
+wsrep_sst_method=rsync
+#wsrep_sst_auth=user:pass
+
+# Galera Node Configuration
+wsrep_node_address="{{ salt['network.ipaddrs']('eth0')[0] }}"
+wsrep_node_name="{{ grains['fqdn'] }}"
