@@ -16,10 +16,17 @@ The installtion is based of DigitalOcean's tutorial on installing MariaDB/Galera
 https://www.digitalocean.com/community/tutorials/how-to-configure-a-galera-cluster-with-mariadb-on-ubuntu-12-04-servers
 
 
+A little about MariaDB-Galera
+===========
+
+A MariaDB-Galera cluster requires at least three nodes, and there is no distiction between each node. However, because a special flag is needed when first starting the cluster, this formula assigns "roles" for each node in the cluster. Even though I might refer to these nodes as a "slave" or "base", in actuality, MariaDB-Glaera is Multi-Master.
+
+Galera is a Write-Set Replication provider for MariaDB. The configurations are set in /etc/mysql/conf.d/cluster.cnf. Once the formula has been ran properly, you should have a cluster that synchronously replicates data between nodes. To find out more about Galera, please visit galeacluster.com/products
+
 Running the states
 ============
 
-Once salt-master and salt-minion have been installed, accept the minions salt-key and follow these instructions on the salt-master: 
+Once salt-master and salt-minion have been installed, accept the minion's salt-key and follow these instructions on the salt-master: 
 
 1. Assign mariadb_base role to one of the nodes in the MariaDB-Galera cluster: 
 	* salt \<node\> grains.setval roles ['mariadb_base']

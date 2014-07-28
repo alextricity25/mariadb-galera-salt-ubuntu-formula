@@ -121,23 +121,6 @@ rsync:
   pkg:
     - installed
 
-#{% if grains['os'] == 'Ubuntu' %} 
-#mysql_first_start:
-#  service: 
-#    - name: mysql
-#    - running
-#    - require: 
-#      - pkg: mariadb-pkgs
-#{% endif %}
-
-#{% if grains['os'] == 'Ubuntu' %}
-#mysql_update_maint:
-#  cmd.run:
-#    - name: mysql -u root -p{{ admin_password }} -e "GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '{{ pillar['mysql_config']['maintenance_password'] }}';"
-#    - require:
-#      - pkg: mariadb-pkgs
-#{% endif %} 
-
 {% if grains['os'] == 'Ubuntu' %}
 mysql_stop: 
   service: 
