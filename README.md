@@ -43,3 +43,17 @@ Once salt-master and salt-minion have been installed, accept the minion's salt-k
 	* salt \<slave_node\> state.sls galera 
 
 
+Three Roles
+============
+*haproxy - The load balancer in front of the MariaDB/Galera Cluster
+*db_bootstrap - Responsible for bootstrapping the first node of the MariaDB/Galera cluster. 
+*db - The rest of the nodes part of the MariaDB/Galera cluster. This does NOT include the bootstrap node. 
+
+Four salt state files
+============
+
+*haproxy - Install LB and configure it. 
+*common - install netcat and rsync
+*xtrabackup - install xtrabackup
+*mysql - install MariaDB/Galera and configure it. 
+
