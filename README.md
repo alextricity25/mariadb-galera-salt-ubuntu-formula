@@ -45,15 +45,15 @@ Once salt-master and salt-minion have been installed, accept the minion's salt-k
 
 Three Roles
 ============
-*haproxy - The load balancer in front of the MariaDB/Galera Cluster
-*db_bootstrap - Responsible for bootstrapping the first node of the MariaDB/Galera cluster. 
-*db - The rest of the nodes part of the MariaDB/Galera cluster. This does NOT include the bootstrap node. 
+1.haproxy - The load balancer in front of the MariaDB/Galera Cluster
+2.db_bootstrap - Responsible for bootstrapping the first node of the MariaDB/Galera cluster. 
+3.db - The rest of the nodes part of the MariaDB/Galera cluster. This does NOT include the bootstrap node. 
 
 Four salt state files
 ============
 
-*haproxy - Install LB and configure it. 
-*common - install netcat and rsync
-*xtrabackup - install xtrabackup
-*mysql - install MariaDB/Galera and configure it. 
+1.haproxy - Install LB and configure it. 
+2.common - install netcat, rsync, and python-software-properties. Run apt-get update? 
+3.xtrabackup - install xtrabackup
+4.mysql - install MariaDB/Galera and configure it. 
 
