@@ -3,7 +3,7 @@ interfaces:
   public: eth0
 
 mine_functions: 
-  network.ip_addrs : [eth0]
+  network.ip_addrs: [eth0]
   network.interfaces: []
 
 mine_interval: 1
@@ -41,16 +41,14 @@ mdb_cfg_files:
 {% endif %}
 
 mdb_config:
-{% if arch == 'amd64' %}
   provider: /usr/lib64/galera/libgalera_smm.so
-{% else %}
-  provider: /usr/lib/galera/libgalera_smm.so
-{% endif %}
 
 mdb_repo:
     baseurl: http://mirror.jmu.edu/pub/mariadb/repo/5.5/{{ os }}
     keyserver: hkp://keyserver.ubuntu.com:80
     keyid: '0xcbcb082a1bb943db'
     file: /etc/apt/sources.list
+
+  
 
   
