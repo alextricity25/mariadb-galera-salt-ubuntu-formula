@@ -26,7 +26,7 @@ mdb_cfg_files:
     source: salt://galera/config/debian.cnf
   
 
-{% elif grains['osfinger'] == 'Ubuntu-12.04' %}
+{% if grains['osfinger'] == 'Ubuntu-12.04' %}
   {% set os = 'ubuntu' %}
 {% elif grains['osfinger'] == 'Ubuntu-14.04' %}
   {% set os = 'ubuntu' %}

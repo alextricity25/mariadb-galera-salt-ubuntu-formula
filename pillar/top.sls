@@ -1,6 +1,4 @@
 base: 
-  '*':
-    - common
   'roles:haproxy':
     - match: grain
     - haproxy
