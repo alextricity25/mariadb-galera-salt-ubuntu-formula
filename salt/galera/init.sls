@@ -83,7 +83,7 @@ start_wsrep:
     - name: "service mysql bootstrap"
     - require: 
       - pkg: mariadb-pkgs
-      - service.dead: mysql
+      - service: mysql_stop
       - cmd: mysql_update_maint
 
 {% endif %} 
