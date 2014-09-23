@@ -1,5 +1,7 @@
 {% set admin_password = pillar['mysql_config']['admin_password'] %}
 
+
+# Add MariaDB-Galera Repo
 mariadb-repo:
   pkgrepo.managed:
     - comments:
@@ -19,6 +21,7 @@ apt_update:
     - require: 
       - pkgrepo: mariadb-repo 
 
+#Pre-seed MariaDB install prompts
 mariadb-debconf: 
   debconf.set:
     - name: mariadb-galera-server
@@ -47,16 +50,23 @@ mariadb-pkgs:
       - pkg: mariadb-pkgs
 {% endfor %}
 
+
+#Currently, Ubuntu and Debian's MariaDB servers use a special maintenance user to do routine maintenance. 
+#Some tasks that fall outside of the maintenance category also are run as this user, including important 
+#functions like stopping MySQL.
 mysql_update_maint:
   cmd.run:
     - name: mysql -u root -p{{ admin_password }} -e "GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '{{ pillar['mysql_config']['maintenance_password'] }}';"
     - require:
       - pkg: mariadb-pkgs
 
+
+## Move this to common salt state file? 
 python-software-properties: 
   pkg: 
     - installed
 
+## Move this to common salt state file? 
 rsync:
   pkg:
     - installed
@@ -67,10 +77,10 @@ mysql_stop:
     - dead
 
 
-{% if grains['roles'][0] == 'mariadb_base' %}
+{% if grains['roles'][0] == 'db_bootstrap' %}
 start_wsrep:
   cmd.run:
-    - name: "service mysql start --wsrep-new-cluster"
+    - name: "service mysql bootstrap"
     - require: 
       - pkg: mariadb-pkgs
       - service.dead: mysql
@@ -79,7 +89,7 @@ start_wsrep:
 {% endif %} 
 
 
-{% if grains['roles'][0] != 'mariadb_base' %} 
+{% if grains['roles'][0] != 'db_bootstrap' %} 
 mysql:
   service.running:
     - reload: True

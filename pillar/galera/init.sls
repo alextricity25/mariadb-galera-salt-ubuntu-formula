@@ -1,9 +1,20 @@
+interfaces: 
+  private: eth0
+  public: eth0
+
+mine_functions: 
+  network.ip_addrs : [eth0]
+  network.interfaces: []
+
+mine_interval: 1
+
+
 mdb_cluster:
   name: test_cluster
-  nodes:
-    mygalera01: 162.209.79.215
-    mygalera02: 166.78.60.13
-    mygalera03: 166.78.60.17
+#  nodes:
+#    mygalera01: 162.209.79.215
+#    mygalera02: 166.78.60.13
+#    mygalera03: 166.78.60.17
 
 mdb_cfg_files:
  

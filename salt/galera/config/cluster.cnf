@@ -1,5 +1,13 @@
-{% set ipaddresses = salt['pillar.get']('mdb_cluster:nodes', {}).values() %} 
-{% set ipaddresses = ",".join(ipaddresses) %} 
+{% set ips = [] %} 
+{% set hosts = salt['mine.get']('roles:db', 'network.ip_addrs', 'grain') %} 
+{% hosts.update(salt['mine.get']('roles:db_bootstrap', 'network.ip_addrs', 'grain') %}
+{% for id, ip in hosts.iteritems() %} 
+  {% ips.append(ip) %}
+{% endfor %}
+{% set ips = ",".join(ips) %} 
+
+#{% set ipaddresses = salt['pillar.get']('mdb_cluster:nodes', {}).values() %} 
+#{% set ipaddresses = ",".join(ipaddresses) %} 
 [mysqld]
 
 innodb_buffer_pool_size=200M
@@ -30,7 +38,7 @@ wsrep_provider=/usr/lib/galera/libgalera_smm.so
 
 #Galera Cluster Configuration
 wsrep_cluster_name="{{ pillar['mdb_cluster']['name'] }}"
-wsrep_cluster_address="gcomm://{{ ipaddresses }}"
+wsrep_cluster_address="gcomm://{{ ips }}"
 
 # Galera Synchronization Configuration 
 #Chat sst method to xtrabackup.
