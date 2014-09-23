@@ -50,6 +50,13 @@ mariadb-pkgs:
       - pkg: mariadb-pkgs
 {% endfor %}
 
+ensure_running:
+  service: 
+    - name: mysql
+    - running
+    - require: 
+      - pkg: mariadb-pkgs
+
 
 #Currently, Ubuntu and Debian's MariaDB servers use a special maintenance user to do routine maintenance. 
 #Some tasks that fall outside of the maintenance category also are run as this user, including important 
@@ -59,6 +66,7 @@ mysql_update_maint:
     - name: mysql -u root -p{{ admin_password }} -e "GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '{{ pillar['mysql_config']['maintenance_password'] }}';"
     - require:
       - pkg: mariadb-pkgs
+      - service: ensure_running
 
 
 ## Move this to common salt state file? 
@@ -80,7 +88,7 @@ mysql_stop:
 {% if grains['roles'][0] == 'db_bootstrap' %}
 start_wsrep:
   cmd.run:
-    - name: "service mysql bootstrap"
+    - name: "service mysql start --wsrep-new-cluster"
     - require: 
       - pkg: mariadb-pkgs
       - service: mysql_stop
