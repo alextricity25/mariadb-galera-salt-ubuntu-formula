@@ -43,3 +43,10 @@ Once salt-master and salt-minion have been installed, accept the minion's salt-k
 	* salt \<slave_node\> state.sls galera 
 
 
+Things to do
+============
+1. Move everything out of pillars
+2. Configure HAproxy
+3. Add xtrabackup packages
+4. Move software-python-packages and rsync to the common salt state
+
