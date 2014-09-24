@@ -20,16 +20,11 @@ bind-address=0.0.0.0
 
 
 # Galera Provider Configuration 
-
-{% if grains['os'] != 'Ubuntu' %}
-wsrep_provider={{ pillar['mdb_config']['provider'] }}
-{% else %} 
 wsrep_provider=/usr/lib/galera/libgalera_smm.so
-{% endif %}
 #wsrep_provider_options="gchache.size=32G" 
 
 #Galera Cluster Configuration
-wsrep_cluster_name="{{ pillar['mdb_cluster']['name'] }}"
+wsrep_cluster_name="RPC_MariaDB"
 wsrep_cluster_address="gcomm://{{ ipaddresses }}"
 
 # Galera Synchronization Configuration 
